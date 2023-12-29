@@ -18,8 +18,4 @@ Time.zone = "UTC"
 # Application Resources
 
 Dir[APP_ROOT.join("app", "models", "*")].each { |model| require model }
-
-get "/" do
-  erb :index
-end
-
+Dir[APP_ROOT.join("app", "controllers", "*")].each { |controller| require controller }

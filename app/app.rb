@@ -3,7 +3,10 @@ require "sinatra/activerecord"
 require "sinatra/flash"
 require "active_support"
 
-require_relative "models/widget"
+require_relative "models/challenge"
+require_relative "models/person"
+require_relative "models/person_challenge"
+require_relative "models/workout"
 
 SQLITE_FILE = ENV["SQLITE_FILE_NAME"] || "app.sqlite3"
 set :database, { adapter: "sqlite3", database: SQLITE_FILE }

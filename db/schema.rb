@@ -10,12 +10,42 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2016_11_13_003854) do
+ActiveRecord::Schema.define(version: 2023_12_29_184244) do
 
-  create_table "widgets", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "name"
+  create_table "challenges", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.date "started_at", null: false
+    t.date "ended_at", null: false
+    t.integer "workout_target", null: false
+    t.decimal "cost_per_workout", null: false
+    t.index ["ended_at"], name: "index_challenges_on_ended_at"
   end
 
+  create_table "people", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "name", null: false
+    t.index ["name"], name: "index_people_on_name", unique: true
+  end
+
+  create_table "person_challenges", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "person_id", null: false
+    t.integer "challenge_id", null: false
+    t.index ["person_id", "challenge_id"], name: "index_person_challenges_on_person_id_and_challenge_id", unique: true
+  end
+
+  create_table "workouts", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.date "occurred_on", null: false
+    t.integer "person_challenge_id", null: false
+    t.index ["person_challenge_id"], name: "index_workouts_on_person_challenge_id"
+  end
+
+  add_foreign_key "person_challenges", "challenges"
+  add_foreign_key "person_challenges", "people"
+  add_foreign_key "workouts", "person_challenges"
 end

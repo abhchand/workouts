@@ -1,3 +1,3 @@
 get "/" do
-  erb :index, views: settings.views + '/root'
+  erb :"root/index"
 end

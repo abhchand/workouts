@@ -1,6 +1,10 @@
 <div class="container">
-  <% color_hex = @challenge.active? ? "198754" : "dc3545" %>
-  <h1 style="margin-top: 50px;"><%= @challenge.participants_as_str(medals: !@challenge.active?).gsub(', ', ' vs ') %></h1>(<span style="color: #<%= color_hex %>"><%= @challenge.active? ? 'ACTIVE' : 'COMPLETED' %></span>)
+  <h1 style="margin-top: 50px;"><%= @challenge.participants_as_str(medals: !@challenge.active?).gsub(', ', ' vs ') %></h1>
+  <% if @challenge.active? %>
+  <span class="badge bg-success">active</span>
+  <% else %>
+  <span class="badge bg-danger">completed</span>
+  <% end %>
 
   <div><b>duration</b>: <%= @challenge.started_at %> - <%= @challenge.ended_at %></div>
   <div><b>target</b>: <%= @challenge.workout_target %> workouts</div>

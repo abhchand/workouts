@@ -13,8 +13,13 @@
       <td><%= c.started_at %></td>
       <td><%= c.ended_at %></td>
       <td><%= c.participants_as_str(medals: true) %></td>
-      <% color_hex = c.active? ? "198754" : "dc3545" %>
-      <td style="color: #<%= color_hex %>"><%= c.active? ? 'ACTIVE' : 'COMPLETED' %></td>
+      <td>
+        <% if c.active? %>
+        <span class="badge bg-success">active</span>
+        <% else %>
+        <span class="badge bg-danger">completed</span>
+        <% end %>
+      </td>
       <td><a style="display: block;" href="/challenges/<%= c.id %>">view →</a></td>
     </tr>
     <% end %>

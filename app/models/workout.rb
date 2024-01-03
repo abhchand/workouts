@@ -7,6 +7,9 @@ class Workout < ActiveRecord::Base
   validates :person_challenge_id, presence: true
   validate :ocurred_within_challenge_range
 
+  after_create { |w| w.challenge.recalculate_winner! }
+  after_destroy { |w| w.challenge.recalculate_winner! }
+
   private
 
   def ocurred_within_challenge_range

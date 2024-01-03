@@ -11,6 +11,19 @@ class Challenge < ActiveRecord::Base
   validate :it_starts_before_it_ends
   validate :winner_is_a_participant
 
+  def recalculate_winner!
+    counts =
+      person_challenges.includes(:person).map do |pc|
+        [pc.person, workouts.where(person_challenge: pc).count]
+      end.sort_by(&:last).reverse
+
+    # If the first count is not strictly greater, we have a tie. In that case,
+    # don't return a winner.
+    (update!(winner: nil) and return) if counts[0][1] <= counts[1][1]
+
+    update!(winner: counts[0][0])
+  end
+
   private
 
   def it_starts_before_it_ends

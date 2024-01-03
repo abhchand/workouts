@@ -47,7 +47,7 @@
           pct_complete = 100 if pct_complete > 100
 
           cost = p.cost_of(@challenge)
-          cost_f = "#{cost >= 0 ? '+' : '-'}$#{'%.2f' % cost}"
+          cost_f = "#{cost >= 0 ? '+' : '-'}$#{'%.2f' % cost.abs}"
           color_hex = cost >= 0 ? "198754" : "dc3545"
         %>
         <p class="card-text"><%= workout_count %> <%= workout_count != 1 ? 'workouts' : 'workout' %></p>

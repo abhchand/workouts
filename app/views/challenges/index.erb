@@ -1,0 +1,22 @@
+<div class="container">
+  <h3 style="margin: 50px 0 25px 0;">Challenges</h3>
+  <table class="table table-sm table-hover w-75" style="margin-bottom: 25px;">
+    <tr>
+      <th>start</th>
+      <th>end</th>
+      <th>participants</th>
+      <th>status</th>
+      <th></th>
+    </tr>
+    <% @challenges.each do |c| %>
+    <tr>
+      <td><%= c.started_at %></td>
+      <td><%= c.ended_at %></td>
+      <td><%= c.participants_as_str(medals: true) %></td>
+      <% color_hex = c.active? ? "198754" : "dc3545" %>
+      <td style="color: #<%= color_hex %>"><%= c.active? ? 'ACTIVE' : 'COMPLETED' %></td>
+      <td><a style="display: block;" href="/challenges/<%= c.id %>">view →</a></td>
+    </tr>
+    <% end %>
+  </table>
+</div>

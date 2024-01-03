@@ -1,0 +1,85 @@
+<div class="container">
+  <% color_hex = @challenge.active? ? "198754" : "dc3545" %>
+  <h1 style="margin-top: 50px;"><%= @challenge.participants_as_str(medals: !@challenge.active?).gsub(', ', ' vs ') %></h1>(<span style="color: #<%= color_hex %>"><%= @challenge.active? ? 'ACTIVE' : 'COMPLETED' %></span>)
+
+  <div><b>duration</b>: <%= @challenge.started_at %> - <%= @challenge.ended_at %></div>
+  <div><b>target</b>: <%= @challenge.workout_target %> workouts</div>
+  <div style="margin-bottom: 50px;"><b>cost</b>: $<%= '%.2f' % @challenge.cost_per_workout %> / workout 🪙</div>
+
+  <div class="row col-6" style="margin-bottom: 50px; background-color: #9ec5fe; padding: 10px 0; border-radius: .25rem;">
+    <h5 style="margin-bottom: 25px;">add workout</h5>
+
+    <form method="post" action="/workouts">
+      <p>
+        <input type="hidden" name="workout[challenge_id]" value="<%= @challenge.id %>" />
+        <select name="workout[person_id]" class="form-select" style="width: initial; display: inline-block;" aria-label="workout participant">
+          <option selected>--</option>
+          <% @participants.each do |p| %>
+          <option value="<%= p.id %>"><%= p.name %></option>
+          <% end %>
+        </select>
+        worked out on
+        <input
+          type="date"
+          name="workout[occurred_on]"
+          value="<%= [Time.now, @challenge.ended_at].min.strftime("%Y-%m-%d") %>"
+          min="<%= @challenge.started_at %>"
+          max="<%= @challenge.ended_at %>" />
+      </p>
+      <button class="btn btn-sm btn-primary">
+        submit
+      </button>
+    </form>
+  </div>
+
+  <div class="row" style="margin-bottom: 50px;">
+    <% @participants.each_with_index do |p, idx| %>
+    <div class="card" style="width: 18rem; margin-right: 25px;">
+      <div class="card-body">
+        <h5 class="card-title"><%= p.name %></h5>
+        <%
+          workout_count = p.workouts.count
+          pct_complete = 100 * (workout_count / @challenge.workout_target.to_f)
+          pct_complete = 100 if pct_complete > 100
+
+          other_participant = @participants[1 - idx]
+          workout_diff = workout_count - other_participant.workouts.count
+          cost = "#{workout_diff >= 0 ? '+' : '-'}$#{'%.2f' % (workout_diff.abs * @challenge.cost_per_workout)}"
+
+          color_hex = workout_diff >= 0 ? "198754" : "dc3545"
+        %>
+        <p class="card-text"><%= workout_count %> <%= workout_count > 1 ? 'workouts' : 'workout' %></p>
+        <p class="card-text" style="color: #<%= color_hex %>"><b><%= cost %></b></p>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" style="width: <%= pct_complete.ceil %>%" aria-valuenow="<%= pct_complete.ceil %>" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+      </div>
+    </div>
+    <% end %>
+  </div>
+
+  <table class="table table-sm table-hover w-50">
+    <tr>
+      <th>name</th>
+      <th>workout date</th>
+      <th></th>
+    </tr>
+    <% @workouts.each do |w| %>
+    <tr>
+      <td><%= w.participant.name %></td>
+      <td><%= w.occurred_on %></td>
+      <td>
+        <form
+          method="post"
+          action="/workouts/<%= w.id %>/destroy"
+          onsubmit="return confirm('Delete <%= w.participant.name %>\'s workout on <%= w.occurred_on %>?');">
+          <button class="btn btn-sm btn-outline-light">
+            🗑️
+          </button>
+        </form>
+      </td>
+    </tr>
+    <% end %>
+  </table>
+
+</div>

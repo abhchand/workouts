@@ -18,8 +18,12 @@ class Person < ActiveRecord::Base
   def cost_of(challenge)
     other_participant = challenge.participants.where.not(id: id).first
 
-    my_workout_count = workout_count(challenge: challenge)
+    my_workout_count    = workout_count(challenge: challenge)
     other_workout_count = other_participant.workout_count(challenge: challenge)
+
+    # Stop counting after reaching the original target
+    my_workout_count    = challenge.workout_target if my_workout_count > challenge.workout_target
+    other_workout_count = challenge.workout_target if other_workout_count > challenge.workout_target
 
     (my_workout_count - other_workout_count) * challenge.cost_per_workout
   end

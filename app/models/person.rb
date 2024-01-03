@@ -28,6 +28,22 @@ class Person < ActiveRecord::Base
     (my_workout_count - other_workout_count) * challenge.cost_per_workout
   end
 
+  def record
+    [
+      challenges.inactive.where(winner: self).count,
+      challenges.inactive.where.not(winner: nil).where.not(winner: self).count,
+      challenges.inactive.where(winner: nil).count
+    ].join("-")
+  end
+
+  def winnings
+    challenges.inactive.map { |c| cost_of(c) }.sum
+  end
+
+  def total_workout_count
+    challenges.inactive.map { |c| workout_count(challenge: c) }.sum
+  end
+
   private
 
   def canonicalize_name

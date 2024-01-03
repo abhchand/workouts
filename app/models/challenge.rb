@@ -11,6 +11,9 @@ class Challenge < ActiveRecord::Base
   validate :it_starts_before_it_ends
   validate :winner_is_a_participant
 
+  scope :active,    -> { where("ended_at >= ?", Time.now) }
+  scope :inactive,  -> { where("ended_at < ?", Time.now) }
+
   def active?
     Time.now <= ended_at
   end

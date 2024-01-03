@@ -1,0 +1,30 @@
+<div class="container">
+  <h1 style="margin: 25px 0 25px 0;">Leaderboard</h1>
+
+  <p style="margin-bottom: 50px;"><i>data only refelcts <b>completed</b> challenges</i></p>
+
+  <table class="table table-sm table-hover">
+    <tr>
+      <th></th>
+      <th>name</th>
+      <th>record</th>
+      <th>workouts</th>
+      <th>winnings</th>
+    </tr>
+    <% @data.each_with_index do |datum, idx| %>
+    <tr>
+      <%
+      cost = datum[:winnings]
+      cost_f = "#{cost >= 0 ? '+' : '-'}$#{'%.2f' % cost.abs}"
+      color_hex = cost >= 0 ? "198754" : "dc3545"
+      %>
+
+      <td><%= idx + 1 %>.</td>
+      <td><%= datum[:name] %></td>
+      <td><%= datum[:record] %></td>
+      <td><%= datum[:workouts] %></td>
+      <td style="color: #<%= color_hex %>"><%= cost_f %></td>
+    </tr>
+    <% end %>
+  </table>
+</div>

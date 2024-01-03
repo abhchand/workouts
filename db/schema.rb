@@ -19,7 +19,9 @@ ActiveRecord::Schema.define(version: 2023_12_29_184244) do
     t.date "ended_at", null: false
     t.integer "workout_target", null: false
     t.decimal "cost_per_workout", null: false
+    t.integer "winner_id"
     t.index ["ended_at"], name: "index_challenges_on_ended_at"
+    t.index ["winner_id"], name: "index_challenges_on_winner_id"
   end
 
   create_table "people", force: :cascade do |t|
@@ -45,6 +47,7 @@ ActiveRecord::Schema.define(version: 2023_12_29_184244) do
     t.index ["person_challenge_id"], name: "index_workouts_on_person_challenge_id"
   end
 
+  add_foreign_key "challenges", "people", column: "winner_id"
   add_foreign_key "person_challenges", "challenges"
   add_foreign_key "person_challenges", "people"
   add_foreign_key "workouts", "person_challenges"

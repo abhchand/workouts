@@ -1,0 +1,70 @@
+<div class="container">
+  <h1 style="margin: 50px 0;">Create a new Challenge</h1>
+  <form method="post" action="/challenges">
+    <table class="table w-50">
+      <tbody>
+        <tr>
+          <th scope="row">Participant 1</th>
+          <td>
+            <select name="challenge[participant_id][0]" class="form-select" style="width: initial; display: inline-block;" aria-label="workout participant">
+              <option disabled selected value> -- select a participant -- </option>
+              <% Person.all.each do |p| %>
+              <option value="<%= p.id %>"><%= p.name %></option>
+              <% end %>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Participant 2</th>
+          <td>
+            <select name="challenge[participant_id][1]" class="form-select" style="width: initial; display: inline-block;" aria-label="workout participant">
+              <option disabled selected value> -- select a participant -- </option>
+              <% Person.all.each do |p| %>
+              <option value="<%= p.id %>"><%= p.name %></option>
+              <% end %>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Challenge Start</th>
+          <th>
+            <input
+              type="date"
+              name="challenge[started_at]"
+              value="<%= Time.now.strftime("%Y-%m-%d") %>" />
+          </th>
+        </tr>
+        <tr>
+          <th scope="row">Challenge End</th>
+          <th>
+            <input
+              type="date"
+              name="challenge[ended_at]"
+              value="<%= (Time.now + 60*60*24).strftime("%Y-%m-%d") %>" />
+          </th>
+        </tr>
+        <tr>
+          <th scope="row">Workout Target</th>
+          <th>
+            <input
+              type="text"
+              name="challenge[workout_target]"
+              value="30" />
+          </th>
+        </tr>
+        <tr>
+          <th scope="row">Cost Per Workout ($)</th>
+          <th>
+            <input
+              type="text"
+              name="challenge[cost_per_workout]"
+              value="10" />
+          </th>
+        </tr>
+      </tbody>
+    </table>
+    <button class="btn btn-primary">
+      create
+    </button>
+  </form>
+</div>

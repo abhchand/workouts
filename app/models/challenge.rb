@@ -11,6 +11,21 @@ class Challenge < ActiveRecord::Base
   validate :it_starts_before_it_ends
   validate :winner_is_a_participant
 
+  def active?
+    Time.now <= ended_at
+  end
+
+  def participants_as_str(medals: false)
+    participants.map do |participant|
+      next(participant.name) if !medals || winner.blank?
+
+      str = participant.name
+      str += " 🏅" if participant == winner
+
+      str
+    end.sort.join(", ")
+  end
+
   def recalculate_winner!
     counts =
       person_challenges.includes(:person).map do |pc|

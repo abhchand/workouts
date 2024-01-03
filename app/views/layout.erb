@@ -34,6 +34,11 @@
             <li class="nav-item">
               <a class="nav-link" href="/about">About</a>
             </li>
+            <% if @person %>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">Log Out</a>
+            </li>
+            <% end %>
           </ul>
         </div>
       </div>
@@ -47,6 +52,11 @@
     <% if flash[:success] %>
       <div class="flash alert alert-success" role="alert">
         <%= flash[:success] %>
+      </div>
+    <% end %>
+    <% if flash[:notice] %>
+      <div class="flash alert alert-primary" role="alert">
+        <%= flash[:notice] %>
       </div>
     <% end %>
 

@@ -1,4 +1,4 @@
-post "/workouts" do
+post "/workouts", auth: :person do
   challenge_id = params["workout"]["challenge_id"]
   person_id = params["workout"]["person_id"]
   occurred_on = params["workout"]["occurred_on"]
@@ -31,7 +31,7 @@ post "/workouts" do
   redirect back
 end
 
-post "/workouts/:id/destroy" do
+post "/workouts/:id/destroy", auth: :person do
   workout = Workout.find(params["id"])
   workout.destroy!
 

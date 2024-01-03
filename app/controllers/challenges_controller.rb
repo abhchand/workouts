@@ -1,14 +1,14 @@
-get "/challenges" do
+get "/challenges", auth: :person do
   @challenges = Challenge.includes(:participants).order(started_at: :desc)
 
   erb :"challenges/index"
 end
 
-get "/challenges/new" do
+get "/challenges/new", auth: :person do
   erb :"challenges/new"
 end
 
-get "/challenges/:challenge_id" do
+get "/challenges/:challenge_id", auth: :person do
   @challenge = Challenge.find(params['challenge_id'])
   @participants = @challenge.participants.includes(:workouts).order(:name)
   @workouts = @challenge.workouts.includes(:participant).order(occurred_on: :desc)
@@ -16,7 +16,7 @@ get "/challenges/:challenge_id" do
   erb :"challenges/show"
 end
 
-post "/challenges" do
+post "/challenges", auth: :person do
   participants = params["challenge"]["participant_id"].values.map { |id| Person.find(id) }
 
   if participants.count != 2 || participants.uniq.count != 2

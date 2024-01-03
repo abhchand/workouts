@@ -1,4 +1,4 @@
-get "/" do
+get "/", auth: :person do
   @active_challenges =
     Challenge
     .includes(:participants)

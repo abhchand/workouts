@@ -14,6 +14,7 @@ class CreateSchema < ActiveRecord::Migration[6.0]
       t.timestamps null: false
       # Unique index added manually below
       t.string :name, null: false, index: false
+      t.string :password, null: false
     end
 
     create_table :person_challenges do |t|

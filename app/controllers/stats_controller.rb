@@ -1,4 +1,4 @@
-get "/stats" do
+get "/stats", auth: :person do
   @data = Person.all.order(:name).map do |person|
     {
       name: person.name,

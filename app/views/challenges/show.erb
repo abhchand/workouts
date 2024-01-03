@@ -51,13 +51,7 @@
           <div class="modal-body">
             <p>
               <input type="hidden" name="workout[challenge_id]" value="<%= @challenge.id %>" />
-              <select name="workout[person_id]" class="form-select" style="width: initial; display: inline-block;" aria-label="workout participant">
-                <option selected>--</option>
-                <% @participants.each do |p| %>
-                <option value="<%= p.id %>"><%= p.name %></option>
-                <% end %>
-              </select>
-              worked out on
+              <b><%= @person.name %></b> worked out on
               <input
                 type="date"
                 name="workout[occurred_on]"
@@ -86,6 +80,7 @@
       <td><%= w.participant.name %></td>
       <td><%= w.occurred_on %></td>
       <td>
+        <% if w.participant == @person %>
         <form
           method="post"
           action="/workouts/<%= w.id %>/destroy"
@@ -94,6 +89,7 @@
             🗑️
           </button>
         </form>
+        <% end %>
       </td>
     </tr>
     <% end %>

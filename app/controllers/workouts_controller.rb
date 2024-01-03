@@ -1,12 +1,7 @@
 post "/workouts", auth: :person do
   challenge_id = params["workout"]["challenge_id"]
-  person_id = params["workout"]["person_id"]
+  person_id = @person.id
   occurred_on = params["workout"]["occurred_on"]
-
-  if person_id.blank?
-    flash[:error] = "Select a participant"
-    redirect back
-  end
 
   if occurred_on.blank?
     flash[:error] = "Select a workout date"
@@ -33,7 +28,13 @@ end
 
 post "/workouts/:id/destroy", auth: :person do
   workout = Workout.find(params["id"])
-  workout.destroy!
 
+  # If you're trying to destroy someone else's workout...
+  if workout.participant != @person
+    flash[:error] = "Insufficient permissions to remove workout"
+    redirect back
+  end
+
+  workout.destroy!
   redirect back
 end

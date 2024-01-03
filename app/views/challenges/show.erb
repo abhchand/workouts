@@ -38,18 +38,16 @@
       <div class="card-body">
         <h5 class="card-title"><%= p.name %></h5>
         <%
-          workout_count = p.workouts.count
+          workout_count = p.workout_count(challenge: @challenge)
           pct_complete = 100 * (workout_count / @challenge.workout_target.to_f)
           pct_complete = 100 if pct_complete > 100
 
-          other_participant = @participants[1 - idx]
-          workout_diff = workout_count - other_participant.workouts.count
-          cost = "#{workout_diff >= 0 ? '+' : '-'}$#{'%.2f' % (workout_diff.abs * @challenge.cost_per_workout)}"
-
-          color_hex = workout_diff >= 0 ? "198754" : "dc3545"
+          cost = p.cost_of(@challenge)
+          cost_f = "#{cost >= 0 ? '+' : '-'}$#{'%.2f' % cost}"
+          color_hex = cost >= 0 ? "198754" : "dc3545"
         %>
-        <p class="card-text"><%= workout_count %> <%= workout_count > 1 ? 'workouts' : 'workout' %></p>
-        <p class="card-text" style="color: #<%= color_hex %>"><b><%= cost %></b></p>
+        <p class="card-text"><%= workout_count %> <%= workout_count != 1 ? 'workouts' : 'workout' %></p>
+        <p class="card-text" style="color: #<%= color_hex %>"><b><%= cost_f %></b></p>
         <div class="progress">
           <div class="progress-bar" role="progressbar" style="width: <%= pct_complete.ceil %>%" aria-valuenow="<%= pct_complete.ceil %>" aria-valuemin="0" aria-valuemax="100"></div>
         </div>

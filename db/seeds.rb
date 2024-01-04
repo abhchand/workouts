@@ -1,4 +1,14 @@
-return if Challenge.count > 0
+if !ENV['RACK_ENV'] == 'development'
+  puts "\tSeeding will not run on non-development environments"
+  return
+end
+
+if Challenge.count > 0
+  puts "\tData already exists... skipping"
+  return
+end
+
+# ########################################################################
 
 puts "\t=== Seeding Challenge"
 c1 = Challenge.create!(

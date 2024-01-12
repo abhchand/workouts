@@ -2,7 +2,7 @@ version: '3'
 
 services:
   workouts:
-    image: workouts/workouts:local
+    image: workouts/workouts:${DOCKER_TAG:-latest}
     build:
       context: .
     environment:

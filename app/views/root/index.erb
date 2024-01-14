@@ -6,7 +6,7 @@
   <p><i>No active challenges</i></p>
   <% else %>
   <div class="table-responsive">
-  <table class="table table-sm table-hover w-75" style="margin-bottom: 25px;">
+  <table class="table table-sm table-hover" style="margin-bottom: 25px;">
     <tr>
       <th>start</th>
       <th>end</th>
@@ -15,9 +15,9 @@
     </tr>
     <% @active_challenges.each do |c| %>
     <tr>
-      <td><%= c.started_at %></td>
-      <td><%= c.ended_at %></td>
-      <td><%= c.participants.map(&:name).sort.join(", ") %></td>
+      <td style="width: 150px;"><%= c.started_at.strftime("%Y %b %d") %></td>
+      <td style="width: 150px;"><%= c.ended_at.strftime("%Y %b %d") %></td>
+      <td style="width: 200px;"><%= c.participants.map(&:name).sort.join(", ") %></td>
       <td><a style="display: block;" href="/challenges/<%= c.id %>">view</a></td>
     </tr>
     <% end %>

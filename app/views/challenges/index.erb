@@ -1,17 +1,17 @@
 <div class="container">
   <h3 style="margin: 50px 0 25px 0;">Challenges</h3>
-  <table class="table table-sm table-hover w-75" style="margin-bottom: 25px;">
+  <table class="table table-sm table-hover" style="margin-bottom: 25px;">
     <tr>
-      <th>start</th>
-      <th>end</th>
-      <th>participants</th>
-      <th>status</th>
+      <th style="width: 150px;">start ↓</th>
+      <th style="width: 150px;">end</th>
+      <th style="width: 200px;">participants</th>
+      <th style="width: 150px;">status</th>
       <th></th>
     </tr>
     <% @challenges.each do |c| %>
     <tr>
-      <td><%= c.started_at %></td>
-      <td><%= c.ended_at %></td>
+      <td><%= c.started_at.strftime("%Y %b %d") %></td>
+      <td><%= c.ended_at.strftime("%Y %b %d") %></td>
       <td><%= c.participants_as_str(medals: true) %></td>
       <td>
         <% if c.active? %>
@@ -20,7 +20,7 @@
         <span class="badge bg-danger">completed</span>
         <% end %>
       </td>
-      <td><a style="display: block;" href="/challenges/<%= c.id %>">view →</a></td>
+      <td><a style="display: block;" href="/challenges/<%= c.id %>">view</a></td>
     </tr>
     <% end %>
   </table>

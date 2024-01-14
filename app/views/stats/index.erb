@@ -7,6 +7,7 @@
     <tr>
       <th></th>
       <th>name</th>
+      <th>win %</th>
       <th>record</th>
       <th>workouts</th>
       <th>winnings</th>
@@ -21,6 +22,7 @@
 
       <td><%= idx + 1 %>.</td>
       <td><%= datum[:name] %></td>
+      <td><%= "%5.3f" % (datum[:win_pct] / 100).round(3) %></td>
       <td><%= datum[:record] %></td>
       <td><%= datum[:workouts] %></td>
       <td style="color: #<%= color_hex %>"><%= cost_f %></td>

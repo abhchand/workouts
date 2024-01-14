@@ -31,7 +31,7 @@ post "/login" do
   username = params["login"]["username"]
   password = params["login"]["password"]
 
-  person = Person.find_by_name(username)
+  person = Person.find_by_name(username&.downcase)
   if person.nil?
     flash[:error] = "Invalid credentials"
     redirect back

@@ -32,7 +32,12 @@ class Challenge < ActiveRecord::Base
   def recalculate_winner!
     counts =
       person_challenges.includes(:person).map do |pc|
-        [pc.person, workouts.where(person_challenge: pc).count]
+        [
+          pc.person,
+          # Get the count of workouts, but cap it at the max allowed by this
+          # challenge
+          [workouts.where(person_challenge: pc).count, workout_target].min
+        ]
       end.sort_by(&:last).reverse
 
     # If the first count is not strictly greater, we have a tie. In that case,

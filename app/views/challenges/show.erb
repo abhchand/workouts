@@ -6,7 +6,7 @@
   <span class="badge bg-danger">completed</span>
   <% end %>
 
-  <div><b>duration</b>: <%= @challenge.started_at %> - <%= @challenge.ended_at %></div>
+  <div style="margin-top: 20px;"><b>duration</b>: <%= @challenge.started_at %> - <%= @challenge.ended_at %></div>
   <div><b>target</b>: <%= @challenge.workout_target %> workouts</div>
   <div style="margin-bottom: 50px;"><b>cost</b>: $<%= '%.2f' % @challenge.cost_per_workout %> / workout 🪙</div>
 
@@ -104,7 +104,7 @@
     <table class="table table-sm table-hover w-50">
       <tr>
         <th>name</th>
-        <th>workout date</th>
+        <th>workout date ↓</th>
         <th></th>
       </tr>
       <% @workouts.each do |w| %>

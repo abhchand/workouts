@@ -37,6 +37,17 @@ class Person < ActiveRecord::Base
     ].join("-")
   end
 
+  def win_pct
+    win = challenges.inactive.where(winner: self).count
+    loss = challenges.inactive.where.not(winner: nil).where.not(winner: self).count
+    ties = challenges.inactive.where(winner: nil).count
+
+    total = win + loss + ties
+    return 0.to_f if total == 0
+
+    100 * ((win + (0.5 * ties)).to_f / total)
+  end
+
   def winnings
     challenges.inactive.map { |c| cost_of(c) }.sum
   end

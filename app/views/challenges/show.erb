@@ -6,6 +6,10 @@
   <span class="badge bg-danger">completed</span>
   <% end %>
 
+  <% if !@challenge.active? %>
+  <div style="margin-top: 20px;"><b style="color: green;">winner</b>: <%= @challenge.winner&.name || 'TIE' %></div>
+  <% end %>
+
   <div style="margin-top: 20px;"><b>duration</b>: <%= @challenge.started_at.strftime("%Y %b %d") %> - <%= @challenge.ended_at.strftime("%Y %b %d") %></div>
   <div><b>target</b>: <%= @challenge.workout_target %> workouts</div>
   <div style="margin-bottom: 50px;"><b>cost</b>: $<%= '%.2f' % @challenge.cost_per_workout %> / workout 🪙</div>

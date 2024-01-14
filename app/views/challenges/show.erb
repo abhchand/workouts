@@ -10,7 +10,43 @@
   <div><b>target</b>: <%= @challenge.workout_target %> workouts</div>
   <div style="margin-bottom: 50px;"><b>cost</b>: $<%= '%.2f' % @challenge.cost_per_workout %> / workout 🪙</div>
 
-  <div class="row" style="margin-bottom: 50px;">
+  <!-- Button trigger modal -->
+  <button style="margin: 0 0 50px 0;" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#workout-modal">
+    + add workout
+  </button>
+
+  <!-- Nav -->
+  <script>
+    function showSummary(e) {
+      // Toggle content
+      document.getElementById('nav-content-summary').style.display = 'flex';
+      document.getElementById('nav-content-workouts').style.display = 'none';
+
+      // Toggle active tab
+      document.getElementById('tab-for-summary').classList.add('active');
+      document.getElementById('tab-for-workouts').classList.remove('active');
+    }
+
+    function showWorkouts(e) {
+      // Toggle content
+      document.getElementById('nav-content-summary').style.display = 'none';
+      document.getElementById('nav-content-workouts').style.display = 'initial';
+
+      // Toggle active tab
+      document.getElementById('tab-for-summary').classList.remove('active');
+      document.getElementById('tab-for-workouts').classList.add('active');
+    }
+  </script>
+  <ul class="nav nav-tabs" style="margin-bottom: 50px;">
+    <li class="nav-item">
+      <a id="tab-for-summary" class="nav-link active" href="#" onClick="showSummary(event)">summary</a>
+    </li>
+    <li class="nav-item">
+      <a id="tab-for-workouts" class="nav-link" href="#" onClick="showWorkouts(event)">workouts</a>
+    </li>
+  </ul>
+
+  <div id="nav-content-summary" class="row" style="margin-bottom: 50px;">
     <% @participants.each_with_index do |p, idx| %>
     <div class="card" style="width: 18rem; margin-right: 25px;">
       <div class="card-body">
@@ -33,11 +69,6 @@
     </div>
     <% end %>
   </div>
-
-  <!-- Button trigger modal -->
-  <button style="margin: 0 0 50px 0;" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#workout-modal">
-    + add workout
-  </button>
 
   <!-- Modal -->
   <div class="modal fade" id="workout-modal" tabindex="-1" aria-labelledby="workout-modal-label" aria-hidden="true">
@@ -69,30 +100,32 @@
     </div>
   </div>
 
-  <table class="table table-sm table-hover w-50">
-    <tr>
-      <th>name</th>
-      <th>workout date</th>
-      <th></th>
-    </tr>
-    <% @workouts.each do |w| %>
-    <tr>
-      <td><%= w.participant.name %></td>
-      <td><%= w.occurred_on %></td>
-      <td>
-        <% if w.participant == @person %>
-        <form
-          method="post"
-          action="/workouts/<%= w.id %>/destroy"
-          onsubmit="return confirm('Delete <%= w.participant.name %>\'s workout on <%= w.occurred_on %>?');">
-          <button class="btn btn-sm btn-outline-light">
-            🗑️
-          </button>
-        </form>
-        <% end %>
-      </td>
-    </tr>
-    <% end %>
-  </table>
+  <div id="nav-content-workouts" style="display: none;" >
+    <table class="table table-sm table-hover w-50">
+      <tr>
+        <th>name</th>
+        <th>workout date</th>
+        <th></th>
+      </tr>
+      <% @workouts.each do |w| %>
+      <tr>
+        <td><%= w.participant.name %></td>
+        <td><%= w.occurred_on %></td>
+        <td>
+          <% if w.participant == @person %>
+          <form
+            method="post"
+            action="/workouts/<%= w.id %>/destroy"
+            onsubmit="return confirm('Delete <%= w.participant.name %>\'s workout on <%= w.occurred_on %>?');">
+            <button class="btn btn-sm btn-outline-light">
+              🗑️
+            </button>
+          </form>
+          <% end %>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
 
 </div>

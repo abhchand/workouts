@@ -5,6 +5,7 @@
   <% if @active_challenges.empty? %>
   <p><i>No active challenges</i></p>
   <% else %>
+  <div class="table-responsive">
   <table class="table table-sm table-hover w-75" style="margin-bottom: 25px;">
     <tr>
       <th>start</th>
@@ -17,10 +18,11 @@
       <td><%= c.started_at %></td>
       <td><%= c.ended_at %></td>
       <td><%= c.participants.map(&:name).sort.join(", ") %></td>
-      <td><a style="display: block;" href="/challenges/<%= c.id %>">view →</a></td>
+      <td><a style="display: block;" href="/challenges/<%= c.id %>">view</a></td>
     </tr>
     <% end %>
   </table>
+  </div>
   <% end %>
 
   <a href="/challenges/new" class="btn btn-success btn-sm">Start a new Challenge</a>

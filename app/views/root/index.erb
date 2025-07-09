@@ -1,9 +1,9 @@
 <div class="container">
+  <h3 style="margin: 50px 0 25px 0;">My Challenges</h3>
+  <a style="margin-bottom: 25px;" href="/challenges/new" class="btn btn-success btn-sm">Start a new Challenge</a>
 
-
-  <h3 style="margin: 50px 0 25px 0;">Active Challenges</h3>
-  <% if @active_challenges.empty? %>
-  <p><i>No active challenges</i></p>
+  <% if @my_challenges.empty? %>
+  <p><i>No challenges</i></p>
   <% else %>
   <div class="table-responsive">
   <table class="table table-sm table-hover" style="margin-bottom: 25px;">
@@ -11,25 +11,27 @@
       <th>start</th>
       <th>end</th>
       <th>participants</th>
+      <th style="width: 150px;">status</th>
       <th></th>
     </tr>
-    <% @active_challenges.each do |c| %>
+    <% @my_challenges.each do |c| %>
     <tr>
       <td style="width: 150px;"><%= c.started_at.strftime("%Y %b %d") %></td>
       <td style="width: 150px;"><%= c.ended_at.strftime("%Y %b %d") %></td>
-      <td style="width: 200px;"><%= c.participants.map(&:name).sort.join(", ") %></td>
+      <td style="width: 200px;"><%= c.participants_as_str(medals: true) %></td>
+      <td>
+        <% if c.active? %>
+        <span class="badge bg-success">active</span>
+        <% else %>
+        <span class="badge bg-danger">completed</span>
+        <% end %>
+      </td>
       <td><a style="display: block;" href="/challenges/<%= c.id %>">view</a></td>
     </tr>
     <% end %>
   </table>
   </div>
   <% end %>
-
-  <a href="/challenges/new" class="btn btn-success btn-sm">Start a new Challenge</a>
-
-  <a role="button" type="button" class="btn btn-sm btn-outline-primary" href="/challenges" style="margin-left: 10px;">
-    See all challenges →
-  </a>
 
   <br />
   <br />

@@ -1,9 +1,12 @@
 get "/", auth: :person do
-  @active_challenges =
-    Challenge
+  @my_challenges =
+    @person
+    .challenges
     .includes(:participants)
-    .where("ended_at > ?", Time.now)
     .order(started_at: :desc)
+
+  @other_challenges =
+    Challenge.includes(:participants).order(started_at: :desc)
 
   erb :"root/index"
 end

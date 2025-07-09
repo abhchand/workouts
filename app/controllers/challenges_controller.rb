@@ -1,9 +1,3 @@
-get "/challenges", auth: :person do
-  @challenges = Challenge.includes(:participants).order(started_at: :desc)
-
-  erb :"challenges/index"
-end
-
 get "/challenges/new", auth: :person do
   erb :"challenges/new"
 end

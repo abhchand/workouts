@@ -5,7 +5,8 @@ set -e
 
 case "$1" in
   console)
-    bundle exec pry -I . -r app/app.rb
+    SESSION_SECRET=5caf3248d93038da5b2a8e6a50dd25ba5a3bc290ae814564135aa890989ec01d \
+      bundle exec pry -I . -r app/app.rb
     ;;
 
   setup)

@@ -2,6 +2,7 @@ class Person < ActiveRecord::Base
   has_many :person_challenges
   has_many :challenges, through: :person_challenges
   has_many :workouts, through: :person_challenges
+  has_many :standalone_workouts
 
 
   validates :name, presence: true

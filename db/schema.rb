@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_29_184244) do
+ActiveRecord::Schema.define(version: 2025_07_09_233725) do
 
   create_table "challenges", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
@@ -40,6 +40,14 @@ ActiveRecord::Schema.define(version: 2023_12_29_184244) do
     t.index ["person_id", "challenge_id"], name: "index_person_challenges_on_person_id_and_challenge_id", unique: true
   end
 
+  create_table "standalone_workouts", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.date "occurred_on", null: false
+    t.integer "person_id", null: false
+    t.index ["person_id"], name: "index_standalone_workouts_on_person_id"
+  end
+
   create_table "workouts", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -51,5 +59,6 @@ ActiveRecord::Schema.define(version: 2023_12_29_184244) do
   add_foreign_key "challenges", "people", column: "winner_id"
   add_foreign_key "person_challenges", "challenges"
   add_foreign_key "person_challenges", "people"
+  add_foreign_key "standalone_workouts", "people"
   add_foreign_key "workouts", "person_challenges"
 end

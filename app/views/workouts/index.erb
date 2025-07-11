@@ -17,7 +17,7 @@
       </tr>
       <% @workouts.each do |w| %>
       <tr>
-        <td style="width: 200px;"><%= w.occurred_on %></td>
+        <td style="width: 120px;"><%= w.occurred_on %></td>
         <td style="padding: 0;">
           <% if w.is_a?(Workout) %>
           <% other = (w.challenge.participants.to_a - [@person]).first %>

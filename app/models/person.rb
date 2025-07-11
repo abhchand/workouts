@@ -10,6 +10,10 @@ class Person < ActiveRecord::Base
 
   before_validation :canonicalize_name
 
+  def all_workouts
+    workouts.includes(challenge: :participants) + standalone_workouts
+  end
+
   def workout_count(challenge: nil)
     query = workouts
     query = query.where("person_challenges.challenge_id = ?", challenge.id) if challenge

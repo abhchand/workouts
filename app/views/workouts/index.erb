@@ -1,0 +1,86 @@
+<div class="container">
+  <h3 style="margin: 50px 0 25px 0;">My Workouts</h3>
+
+  <p><%= @workouts.count %> workouts</p>
+
+  <!-- Button trigger modal -->
+  <button style="margin: 0 0 50px 0;" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#workout-modal">
+    + add workout
+  </button>
+
+  <div class="table-responsive">
+    <table class="table table-sm table-hover" style="max-width: 700px;">
+      <tr>
+        <th>date ↓</th>
+        <th>type</th>
+        <th>action</th>
+      </tr>
+      <% @workouts.each do |w| %>
+      <tr>
+        <td style="width: 200px;"><%= w.occurred_on %></td>
+        <td style="padding: 0;">
+          <% if w.is_a?(Workout) %>
+          <% other = (w.challenge.participants.to_a - [@person]).first %>
+          challenge <a href="/challenges/<%= w.challenge.id %>">(vs <%= other.name %>)</a>
+          <% else %>
+          standalone
+          <% end %>
+        </td>
+        <td style="padding: 0;">
+          <% if w.is_a?(Workout) %>
+          <form
+            method="post"
+            action="/workouts/<%= w.id %>/destroy"
+            onsubmit="return confirm('Delete workout on <%= w.occurred_on %>?');">
+            <button class="btn btn-sm btn-outline-light">
+              ❌
+            </button>
+          </form>
+          <% else %>
+          <form
+            method="post"
+            action="/standalone-workouts/<%= w.id %>/destroy"
+            onsubmit="return confirm('Delete standalone workout on <%= w.occurred_on %>?');">
+            <button class="btn btn-sm btn-outline-light">
+              ❌
+            </button>
+          </form>
+          <% end %>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+
+  <div class="modal fade" id="workout-modal" tabindex="-1" aria-labelledby="workout-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="workout-modal-label">add workout</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id='workout-form' method="post" action="/workouts">
+          <div class="modal-body">
+            <p>
+              <b><%= @person.name %></b> worked out on
+              <input
+                type="date"
+                name="workout[occurred_on]"
+                value="<%= Time.now.strftime("%Y-%m-%d") %>" />
+            </p>
+
+            <p>
+              <b>NOTE:</b> if the workout occurrs during any of your challenges, it will be automatically associated with that challenge.
+            </p>
+
+            <p>If not, it will be logged as a standalone workout</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">cancel</button>
+            <button type="submit" class="btn btn-primary">add</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

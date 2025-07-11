@@ -1,5 +1,10 @@
+get "/workouts", auth: :person do
+  @workouts = @person.all_workouts.sort_by(&:occurred_on).reverse
+
+  erb :"workouts/index"
+end
+
 post "/workouts", auth: :person do
-  challenge_id = params["workout"]["challenge_id"]
   person_id = @person.id
   occurred_on = params["workout"]["occurred_on"]
 
@@ -8,21 +13,41 @@ post "/workouts", auth: :person do
     redirect back
   end
 
-  pc = PersonChallenge.find_by(challenge_id: challenge_id, person_id: person_id)
+  # Find the challenge associated with this workout
+  challenge =
+    @person
+    .challenges
+    .where("started_at <= ?", occurred_on)
+    .where("ended_at >= ?", occurred_on)
+    .first
 
-  if pc.blank?
-    flash[:error] = "This participant is not involved in this challenge"
-    redirect back
+  if challenge.blank?
+    # create standalone workout
+    standalone_workout = StandaloneWorkout.new(person: @person, occurred_on: occurred_on)
+
+    if !standalone_workout.valid?
+      flash[:error] = standalone_workout.error_messages
+      redirect back
+      return
+    end
+
+    standalone_workout.save!
+
+  else
+    # create workout
+
+    pc = PersonChallenge.find_by(challenge: challenge, person: person)
+    workout = Workout.new(occurred_on: occurred_on, person_challenge_id: pc.id)
+
+    if !workout.valid?
+      flash[:error] = workout.error_messages
+      redirect back
+      return
+    end
+
+    workout.save!
   end
 
-  workout = Workout.new(occurred_on: occurred_on, person_challenge_id: pc.id)
-
-  if !workout.valid?
-    flash[:error] = workout.error_messages
-    redirect back
-  end
-
-  workout.save!
   redirect back
 end
 

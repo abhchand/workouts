@@ -1,7 +1,9 @@
 <div class="container">
-  <h3 style="margin: 50px 0 25px 0;">My Workouts</h3>
+  <h3 style="margin: 50px 0 25px 0;">Workout History</h3>
 
-  <p><%= @workouts.count %> workouts</p>
+  <p>Below are all your workouts, across all your challenges. It also includes any standalone workouts you've logged here.</p>
+
+  <p><b><%= @workouts.count %> workouts</b></p>
 
   <!-- Button trigger modal -->
   <button style="margin: 0 0 50px 0;" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#workout-modal">

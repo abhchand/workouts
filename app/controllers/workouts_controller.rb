@@ -36,7 +36,7 @@ post "/workouts", auth: :person do
   else
     # create workout
 
-    pc = PersonChallenge.find_by(challenge: challenge, person: person)
+    pc = PersonChallenge.find_by(challenge: challenge, person: @person)
     workout = Workout.new(occurred_on: occurred_on, person_challenge_id: pc.id)
 
     if !workout.valid?
